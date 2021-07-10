@@ -2,8 +2,10 @@ import withSession from "../lib/session";
 import GetTokensFromServer from "../lib/getTokens";
 import GetUserFromServer from "../lib/getUser";
 import FeedScroller from "../components/FeedScroller";
+import { GetServerSideProps } from "next";
+import User from "../types/User";
 
-export const getServerSideProps = withSession(async function ({ req, res }) {
+export const getServerSideProps: GetServerSideProps = withSession(async function ({ req, res }) {
   let user = await GetUserFromServer(req, res);
   let { token, refresh } = await GetTokensFromServer(req, res);
 
@@ -23,12 +25,10 @@ export const getServerSideProps = withSession(async function ({ req, res }) {
   }
 });
 
-const Feed = (props) => {
+export default function Feed({ user }: { user: User}) {
   return (
       <div className="pageContainer">
-          <FeedScroller team={props.user.userTeam}/>
+          <FeedScroller team={user.userTeam}/>
       </div>
   );
 };
-
-export default Feed;

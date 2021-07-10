@@ -1,24 +1,27 @@
-import { DateTime } from "luxon";
 import { Component, useEffect, useState } from "react";
 import FeedPostHeader from "./feed/FeedPostHeader";
 import FeedCommentsView from "./feed/FeedCommentsView";
 import Modal from "react-modal";
 import InfiniteScroll from "react-infinite-scroll-component";
+import { UserTeam } from "../types/User";
+import { FeedAditLog, FeedMediaPost, FeedPollPost, FeedPost } from "../types/Feed";
 
-const FeedScroller = (props) => {
-  const [posts, addPosts] = useState([]);
+export default function FeedScroller({ team }: { team: UserTeam }) {
+  const [posts, addPosts] = useState<FeedPost[]>([]);
   const [aditLogs, addAditLogs] = useState({});
   const [lastDate, setLastDate] = useState(new Date());
-  const [prevY, setPrevY] = useState(0);
   const [modalOpen, setModalOpen] = useState(false);
   const [canLoadMore, setCanLoadMore] = useState(true);
-  const team = props.team;
   const teamId = team.teamId;
 
   useEffect(() => {
     getPosts();
     getAditLogs();
   }, []);
+
+  function toggleModal() {
+    setModalOpen(true);
+  }
 
   function getPosts() {
     fetch(
@@ -38,7 +41,7 @@ const FeedScroller = (props) => {
       });
   }
 
-  function addNewPosts(newPosts) {
+  function addNewPosts(newPosts: FeedPost[]) {
     if (newPosts.length > 0) {
       addPosts(posts.concat(newPosts));
       setLastDate(new Date(newPosts[newPosts.length - 1].postCreatedAt));
@@ -48,7 +51,7 @@ const FeedScroller = (props) => {
     }
   }
 
-  function joinAditLogs(data) {
+  function joinAditLogs(data: FeedAditLog[]) {
     let aditLogs =
       data.length > 0
         ? Object.assign({}, ...data.map((x) => ({ [x.posterUUID]: x })))
@@ -60,8 +63,9 @@ const FeedScroller = (props) => {
     setModalOpen(false);
   }
 
-  function getPostContentToDisplay(post) {
-    if (post.postType === "media") {
+  function getPostContentToDisplay(_post: FeedPost) {
+    if (_post.postType === "media") {
+      let post: FeedMediaPost = _post as FeedMediaPost;
       if (post.isVideo === true) {
         return (
           <video
@@ -85,14 +89,15 @@ const FeedScroller = (props) => {
           ></img>
         );
       }
-    } else if (post.postType === "poll") {
+    } else if (_post.postType === "poll") {
+      let post = _post as FeedPollPost;
       return (
         <div className="w-full">
           <h1 className="font-bold text-xl text-center">{post.pollQuestion}</h1>
           {post.pollAnswers.map((answer) => (
             <div
               className={`rounded-md m-3 p-6 bg-gray-800 cursor-pointer md:hover:mb-1 hover:mr-1 hover:ml-1 translate ease-in-out`}
-              onClick={setModalOpen}
+              onClick={toggleModal}
               key={answer.pollAnswerId}
             >
               {answer.answer}
@@ -195,6 +200,4 @@ const FeedScroller = (props) => {
       </div>
     </div>
   );
-};
-
-export default FeedScroller;
+}

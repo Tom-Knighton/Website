@@ -27,6 +27,7 @@ hr {
 }
 
 .pageContainer {
+  height: calc(100vh - 64px);
   @apply px-5 py-5 justify-center place-items-center;
 }
 

@@ -1,4 +1,4 @@
-export default async function GetTokensFromServer(req, res) {
+export default async function GetTokensFromServer(req, res): Promise<TokenResponse> {
   const userUUID = req.session.get("userUUID");
   const token = req.session.get("token");
   const refresh = req.session.get("refresh");
@@ -8,4 +8,10 @@ export default async function GetTokensFromServer(req, res) {
   } else {
     return null;
   }
+}
+
+interface TokenResponse {
+  userUUID: string,
+  token: string,
+  refresh: string
 }

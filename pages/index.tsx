@@ -6,32 +6,37 @@ import FeedService from "../network/FeedService";
 import { PlayIcon, ChartSquareBarIcon } from "@heroicons/react/outline";
 import Link from "next/link";
 import Modal from "react-modal";
+import { GetServerSideProps } from "next";
+import User from "../types/User";
+import { FeedPostDTO } from "../types/Feed";
 
 Modal.setAppElement("#__next");
 
-export const getServerSideProps = withSession(async function ({ req, res }) {
-  let user = await GetUserFromServer(req, res);
-  let { token, refresh } = await GetTokensFromServer(req, res);
+export const getServerSideProps: GetServerSideProps = withSession(
+  async function ({ req, res }) {
+    let user = await GetUserFromServer(req, res);
+    let { token, refresh } = await GetTokensFromServer(req, res);
 
-  if (!user || !token || !refresh) {
+    if (!user || !token || !refresh) {
+      return {
+        redirect: {
+          destination: "/auth/login",
+          permanent: false,
+        },
+      };
+    }
+
+    let postDTOs = await FeedService.GetPostDTOs(user.userUUID, token);
     return {
-      redirect: {
-        destination: "/auth/login",
-        permanent: false,
+      props: {
+        user,
+        postDTOs,
       },
     };
   }
+);
 
-  let postDTOs = await FeedService.GetPostDTOs(user.userUUID, token);
-  return {
-    props: {
-      user,
-      postDTOs,
-    },
-  };
-});
-
-function PostPreviewContent({ post }) {
+function PostPreviewContent({ post }: { post: FeedPostDTO }) {
   return post.isVideo ? (
     <PlayIcon className="w-16 h-full self-center m-auto" />
   ) : post.postType === "poll" ? (
@@ -44,9 +49,9 @@ function PostPreviewContent({ post }) {
   );
 }
 
-const Home = (props) => {
-  const user = props.user;
-  const posts = props.postDTOs;
+
+export default function Home({ user, postDTOs }: { user: User, postDTOs: FeedPostDTO[] }) {
+  const posts = postDTOs;
   return (
     <div>
       <Head>
@@ -137,9 +142,8 @@ const Home = (props) => {
                   .slice(-6)
                   .map((post) => (
                     <div
-                      className="profilePost"
                       key={post.postId}
-                      className="max-w-40 max-h-40 rounded-lg shadow bg-darkgray overflow-none justify-center place-items-center"
+                      className="profilePost max-w-40 max-h-40 rounded-lg shadow bg-darkgray overflow-none justify-center place-items-center"
                     >
                       <PostPreviewContent post={post} />
                     </div>
@@ -204,5 +208,3 @@ const Home = (props) => {
     </div>
   );
 };
-
-export default Home;

@@ -1,4 +1,6 @@
 import RuleCard from "../components/ruleCard";
+import Rule from "../types/Rule";
+
 const rules = () => {
   return (
     <div>
@@ -17,7 +19,7 @@ const rules = () => {
   );
 };
 
-const rulesList = [
+const rulesList: Rule[] = [
   {
     ruleId: "A",
     ruleName: "Respect",
