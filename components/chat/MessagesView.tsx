@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { Chat, ChatMessage } from "../../types/Chat";
+import { ChatMessage } from "../../types/Chat";
 import InfiniteScroll from "react-infinite-scroll-component";
 import ChatMessageView from "./ChatMessage";
 import { useRef } from "react";
@@ -10,7 +10,7 @@ import SelectChatCover from "./SelectChatCover";
 
 export default function MessagesView() {
   const appStore = useSelector((state: StoreState) => state.app);
-  const { currentChatUUID, currentChat } = appStore;
+  const { currentChatUUID, currentChat, currentUser } = appStore;
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [lastDate, setLastDate] = useState(new Date());
   const [modalOpen, setModalOpen] = useState(false);
@@ -80,13 +80,16 @@ export default function MessagesView() {
   }
 
   function getPreviousMessage(message: ChatMessage): ChatMessage | null {
-    let index = messages.findIndex(m => m.chatMessageUUID === message.chatMessageUUID);
+    let index = messages.findIndex(
+      (m) => m.chatMessageUUID === message.chatMessageUUID
+    );
     return index != messages.length - 1 ? messages[index + 1] : null;
   }
 
+
+
   return (
-    <div className="w-full h-full flex-1 overflow-y-scroll rounded-b-md"
-    >
+    <div className="w-full h-full flex-1 overflow-y-scroll rounded-b-md">
       {currentChatUUID !== null && (
         <InfiniteScroll
           className={`${currentChatUUID === null ? "hidden" : "block"}`}
@@ -100,13 +103,18 @@ export default function MessagesView() {
           <div ref={scrollRef}></div>
           {messages?.map((message) => (
             <div id={message.chatMessageUUID}>
-              <ChatMessageView chatMessage={message} previousChatMessage={getPreviousMessage(message)}></ChatMessageView>
+              <ChatMessageView
+                chatMessage={message}
+                previousChatMessage={getPreviousMessage(message)}
+              ></ChatMessageView>
             </div>
           ))}
           <div ref={ref}></div>
         </InfiniteScroll>
       )}
-      <div className={`${currentChatUUID === null ? "block" : "hidden"} h-full`}>
+      <div
+        className={`${currentChatUUID === null ? "block" : "hidden"} h-full`}
+      >
         <SelectChatCover />
       </div>
     </div>

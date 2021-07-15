@@ -35,6 +35,20 @@ class ChatService {
         return [];
       });
   }
+
+  static async SendChatMessage(
+    message: ChatMessage,
+    toChat: string,
+    auth: string
+  ): Promise<ChatMessage> {
+    return ApiClient.post(`chat/${toChat}/newmessage`, message, auth)
+      .then((resp) => {
+        return resp.data as ChatMessage;
+      })
+      .catch(() => {
+        return null;
+      });
+  }
 }
 
 export default ChatService;
