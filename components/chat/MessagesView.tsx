@@ -79,6 +79,11 @@ export default function MessagesView() {
     setModalOpen(false);
   }
 
+  function getPreviousMessage(message: ChatMessage): ChatMessage | null {
+    let index = messages.findIndex(m => m.chatMessageUUID === message.chatMessageUUID);
+    return index != messages.length - 1 ? messages[index + 1] : null;
+  }
+
   return (
     <div className="w-full h-full flex-1 overflow-y-scroll rounded-b-md"
     >
@@ -95,7 +100,7 @@ export default function MessagesView() {
           <div ref={scrollRef}></div>
           {messages?.map((message) => (
             <div id={message.chatMessageUUID}>
-              <ChatMessageView chatMessage={message}></ChatMessageView>
+              <ChatMessageView chatMessage={message} previousChatMessage={getPreviousMessage(message)}></ChatMessageView>
             </div>
           ))}
           <div ref={ref}></div>
