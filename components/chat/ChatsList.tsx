@@ -65,7 +65,7 @@ export default function ChatsList({ user }: { user: User }) {
         <h1 className="pageSubtitle">Chats:</h1>
       </div>
       {chats.map((chat) => (
-        <div onClick={() => clickOnChat(chat)} className="bg-gray-100 dark:bg-darkgraylight shadow-lg rounded-xl p-5 max-h-50 top-0 self-start text-center m-5 flex flex-row place-items-center cursor-pointer hover:bg-gray-200">
+        <div key={chat.chatUUID} onClick={() => clickOnChat(chat)} className="bg-gray-100 dark:bg-darkgraylight shadow-lg rounded-xl p-5 max-h-50 top-0 self-start text-center m-5 flex flex-row place-items-center cursor-pointer hover:bg-gray-200">
           <img
             src={getImageUrlForChat(chat)}
             className="w-12 h-12 rounded-full shadow-xl"

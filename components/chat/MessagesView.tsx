@@ -102,7 +102,7 @@ export default function MessagesView() {
         >
           <div ref={scrollRef}></div>
           {messages?.map((message) => (
-            <div id={message.chatMessageUUID}>
+            <div id={message.chatMessageUUID} key={message.chatMessageUUID}>
               <ChatMessageView
                 chatMessage={message}
                 previousChatMessage={getPreviousMessage(message)}
