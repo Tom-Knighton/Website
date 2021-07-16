@@ -27,7 +27,6 @@ export default function ChannelHeader() {
     if (!currentChat || !currentUser) {
       return "";
     }
-    console.log(currentChat);
 
     let uuid = currentUser.userUUID;
     if (

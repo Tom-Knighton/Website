@@ -18,7 +18,7 @@ class UserService {
       .then((resp) => {
         return resp.data;
       })
-      .catch(() => {});
+      .catch((error) => { console.log(error)});
   }
 
   static async getCurrentUser(auth) {
