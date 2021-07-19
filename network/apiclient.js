@@ -1,7 +1,7 @@
 import axios from "axios";
 
 let config = {
-    baseURL: "https://api-dev.garyportal.tomk.online/api/"
+    baseURL: "https://f2b5d0197184.ngrok.io/api/"
 };
 
 const httpClient = axios.create(config);

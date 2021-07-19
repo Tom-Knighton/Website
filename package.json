@@ -15,6 +15,7 @@
     "@microsoft/signalr": "^3.1.9",
     "@reduxjs/toolkit": "^1.6.0",
     "axios": "^0.21.1",
+    "js-cookie": "^2.2.1",
     "luxon": "^1.27.0",
     "next": "11.0.1",
     "next-iron-session": "^4.2.0",
@@ -31,6 +32,7 @@
     "react-scroll": "^1.8.2",
     "react-scroll-to-bottom": "^4.1.2",
     "redux": "^4.1.0",
+    "skeleton": "^0.1.2",
     "swr": "^0.5.6"
   },
   "devDependencies": {

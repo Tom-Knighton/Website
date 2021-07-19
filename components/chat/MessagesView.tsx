@@ -7,10 +7,11 @@ import { useRef } from "react";
 import { useInView } from "react-intersection-observer";
 import { StoreState } from "../../reducers";
 import SelectChatCover from "./SelectChatCover";
+import fetchJson from "../../lib/fetchJson";
 
 export default function MessagesView() {
   const appStore = useSelector((state: StoreState) => state.app);
-  const { currentChatUUID, currentChat, currentUser } = appStore;
+  const { currentChatUUID, currentChat, currentUser, latestChatMessage } = appStore;
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [lastDate, setLastDate] = useState(new Date());
   const [modalOpen, setModalOpen] = useState(false);
@@ -36,6 +37,19 @@ export default function MessagesView() {
     setMessages([]);
     setLastDate(new Date());
   }, [currentChatUUID, currentChat]);
+
+  useEffect(() => {
+    async function getAndAppendNewMessage() {
+      const message: ChatMessage = await fetchJson(`/api/chatMessage?messageUUID=${latestChatMessage.messageUUID}`);
+      if (message) {
+        setMessages([message].concat(messages));
+        document.getElementById(messages[0].chatMessageUUID).scrollIntoView();
+      }
+    }
+    if (latestChatMessage && currentChatUUID && latestChatMessage.chatUUID === currentChatUUID) {
+        getAndAppendNewMessage();
+    }
+  }, [latestChatMessage]);
 
   function toggleModal() {
     setModalOpen(true);

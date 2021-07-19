@@ -18,6 +18,14 @@ class ChatService {
       .catch();
   }
 
+  static async GetMessageByUUID(messageUUID: string, auth: string): Promise<ChatMessage> {
+    return ApiClient.get(`chat/message/${messageUUID}`, auth)
+      .then((resp) => {
+        return resp.data as ChatMessage;
+      })
+      .catch();
+  }
+
   static async GetMessagesForChat(
     chatUUID: string,
     startfrom: number = new Date().getTime(),

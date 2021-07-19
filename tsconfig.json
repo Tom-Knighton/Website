@@ -22,7 +22,7 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx"
-, "lib/getTokens.ts"  ],
+, "lib/getTokens.ts", "lib/GaryPortalProvider.tsx"  ],
   "exclude": [
     "node_modules"
   ]

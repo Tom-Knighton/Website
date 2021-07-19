@@ -32,7 +32,6 @@ export default function ChannelView() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(newMessage),
     });
-    alert(finalMessage.messageContent);
 
     dispatch(sendNewChatMessage({ chatUUID: finalMessage.chatUUID, messageUUID: finalMessage.chatMessageUUID, userUUID: finalMessage.userUUID }));
   }

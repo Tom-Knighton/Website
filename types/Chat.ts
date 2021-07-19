@@ -34,3 +34,8 @@ export interface ChatMember {
     user: User,
     userDTO: UserDTO
 }
+
+export interface ReceiveNewChatMessageDTO {
+    chatUUID: string,
+    messageUUID: string
+}

@@ -1,9 +1,14 @@
+import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { StoreState } from "../../reducers";
 
 export default function ChannelHeader() {
   const appStore = useSelector((store: StoreState) => store.app);
-  const { currentChat, currentUser } = appStore;
+  let { currentChat, currentUser } = appStore;
+
+  useEffect(() => {
+    currentChat = appStore.currentChat;
+  }, [currentChat]);
 
   function getImageUrlForChat(): string {
     if (!currentChat || !currentUser) {
