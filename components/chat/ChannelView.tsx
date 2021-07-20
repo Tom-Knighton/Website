@@ -30,6 +30,7 @@ export default function ChannelView() {
       user: null,
       userUUID: currentUser.userUUID,
       userDTO: null,
+      replyingToDTO: null,
     };
 
     let finalMessage: ChatMessage = await fetchJson("/api/sendChatMessage", {
@@ -38,14 +39,22 @@ export default function ChannelView() {
       body: JSON.stringify(newMessage),
     });
 
-    dispatch(sendNewChatMessage({ chatUUID: finalMessage.chatUUID, messageUUID: finalMessage.chatMessageUUID, userUUID: finalMessage.userUUID }));
+    dispatch(
+      sendNewChatMessage({
+        chatUUID: finalMessage.chatUUID,
+        messageUUID: finalMessage.chatMessageUUID,
+        userUUID: finalMessage.userUUID,
+      })
+    );
   }
 
   return (
     <div className="flex-1 rounded-t-md overflow-y-scroll flex flex-col border-2">
-      {currentChatUUID && (<ChannelHeader />)}
+      {currentChatUUID && <ChannelHeader />}
       <MessagesView />
-      {currentChatUUID && (<ChatInputBar onSubmitMessage={(message) => sendMessage(message)} />)}
+      {currentChatUUID && (
+        <ChatInputBar onSubmitMessage={(message) => sendMessage(message)} />
+      )}
     </div>
   );
 }

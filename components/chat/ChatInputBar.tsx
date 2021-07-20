@@ -23,7 +23,7 @@ export default function ChatInputBar({
         <input
         className="w-full mt-1 p-3 border-t-2 rounded-xl focus:border-blue-500 outline-none"
           type="text"
-          placeholder="send msg bby"
+          placeholder="Type something..."
           value={messageText}
           onChange={updateMessageText}
         ></input>

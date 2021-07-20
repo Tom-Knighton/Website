@@ -1,8 +1,10 @@
-import { ChatMessage } from "../../types/Chat";
+import { ChatMessage, ChatReplyDTO } from "../../types/Chat";
 import { DateTime } from "luxon";
 import React, { JSXElementConstructor, ReactElement } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import { useTheme } from "next-themes";
+import { useEffect } from "react";
 
 export default function ChatMessageView({
   chatMessage,
@@ -11,6 +13,11 @@ export default function ChatMessageView({
   chatMessage: ChatMessage;
   previousChatMessage: ChatMessage | null;
 }) {
+
+  let { systemTheme } = useTheme();
+
+  useEffect(() => { systemTheme = systemTheme; }, [systemTheme]);
+
   function isWithinPreviousMessage(): boolean {
     if (!previousChatMessage) {
       return false;
@@ -56,12 +63,45 @@ export default function ChatMessageView({
       ? "/bot.png"
       : chatMessage.userDTO.userProfileImageUrl;
 
-  function messageTitle(): ReactElement {
+  function messageTitle(
+    chatMessage?: ChatMessage,
+    reply?: ChatReplyDTO
+  ): ReactElement {
+    if (!chatMessage && !reply) {
+      return (
+        <h3 className={`font-bold ${isWithin ? "hidden" : "block"}`}>
+          <span className={`font-bold ${"text-current"}`}>[Deleted User]</span>{" "}
+          <span className="font-extralight">
+            {DateTime.fromSQL(chatMessage.messageCreatedAt).toRelative({
+              base: DateTime.fromJSDate(adjustForUTCOffset(new Date())),
+            })}
+          </span>
+        </h3>
+      );
+    }
+
+    if (!chatMessage && reply) {
+      chatMessage = {
+        chatMessageUUID: reply.chatMessageUUID,
+        chatUUID: "",
+        messageContent: reply.messageContent,
+        messageCreatedAt: new Date(),
+        messageHasBeenEdited: false,
+        messageIsDeleted: reply.messageIsDeleted,
+        messageTypeId: 1,
+        user: null,
+        userDTO: reply.userDTO,
+        replyingToDTO: null,
+        replyingToUUID: null,
+        userUUID: reply.userUUID
+      };
+    }
+
     const isBot = chatMessage.messageTypeId === 5;
     const isAdmin = chatMessage.messageTypeId === 7;
-    const name = !isBot
+    const name = `${reply ? '@' : ''}${!isBot
       ? chatMessage.userDTO.userFullName ?? "[Deleted User]"
-      : "Gary Portal Bot";
+      : "Gary Portal Bot"}${reply ? ':' : ''}`;
 
     return (
       <h3 className={`font-bold ${isWithin ? "hidden" : "block"}`}>
@@ -164,20 +204,33 @@ export default function ChatMessageView({
   }
 
   return (
-    <div
-      className={`flex flex-row w-full ${
-        isWithin ? "" : "mt-3"
-      } hover:bg-gray-100`}
-    >
-      <div className={`mr-4 ${isWithin ? "hidden" : "block"}`}>
-        <img
-          src={messageProfilePicUrl}
-          className="w-12 h-12 rounded-full shadow"
-        />
-      </div>
-      <div className={`flex-1 flex flex-col ${isWithin ? "ml-16" : ""}`}>
-        {messageTitle()}
-        {messageContent()}
+    <div className="flex flex-col">
+      {chatMessage.replyingToDTO && (
+        <div className="flex flex-row mt-1 text-gray-500">
+          <img src={`${systemTheme === 'light' ? 'replyarrow.png' : 'replyarrowdark.png'}`} className="w-6 h-6 ml-5 mr-3" />
+          <span className="mr-2 text-sm flex-none">
+            {messageTitle(null, chatMessage.replyingToDTO)}
+          </span>
+          <span className="text-sm max-h-6 truncate overflow-ellipsis mr-10">
+            {chatMessage.replyingToDTO.messageContent}{chatMessage.replyingToDTO.messageContent}{chatMessage.replyingToDTO.messageContent}{chatMessage.replyingToDTO.messageContent}{chatMessage.replyingToDTO.messageContent}{chatMessage.replyingToDTO.messageContent}{chatMessage.replyingToDTO.messageContent}{chatMessage.replyingToDTO.messageContent}{chatMessage.replyingToDTO.messageContent}{chatMessage.replyingToDTO.messageContent}{chatMessage.replyingToDTO.messageContent}{chatMessage.replyingToDTO.messageContent}{chatMessage.replyingToDTO.messageContent}{chatMessage.replyingToDTO.messageContent}{chatMessage.replyingToDTO.messageContent}{chatMessage.replyingToDTO.messageContent}{chatMessage.replyingToDTO.messageContent}{chatMessage.replyingToDTO.messageContent}{chatMessage.replyingToDTO.messageContent}{chatMessage.replyingToDTO.messageContent}{chatMessage.replyingToDTO.messageContent}{chatMessage.replyingToDTO.messageContent}{chatMessage.replyingToDTO.messageContent}{chatMessage.replyingToDTO.messageContent}{chatMessage.replyingToDTO.messageContent}{chatMessage.replyingToDTO.messageContent}{chatMessage.replyingToDTO.messageContent}{chatMessage.replyingToDTO.messageContent}{chatMessage.replyingToDTO.messageContent}{chatMessage.replyingToDTO.messageContent}{chatMessage.replyingToDTO.messageContent}{chatMessage.replyingToDTO.messageContent}{chatMessage.replyingToDTO.messageContent}{chatMessage.replyingToDTO.messageContent}{chatMessage.replyingToDTO.messageContent}{chatMessage.replyingToDTO.messageContent}{chatMessage.replyingToDTO.messageContent}{chatMessage.replyingToDTO.messageContent}{chatMessage.replyingToDTO.messageContent}{chatMessage.replyingToDTO.messageContent}{chatMessage.replyingToDTO.messageContent}{chatMessage.replyingToDTO.messageContent}{chatMessage.replyingToDTO.messageContent}{chatMessage.replyingToDTO.messageContent}{chatMessage.replyingToDTO.messageContent}{chatMessage.replyingToDTO.messageContent}{chatMessage.replyingToDTO.messageContent}{chatMessage.replyingToDTO.messageContent}{chatMessage.replyingToDTO.messageContent}{chatMessage.replyingToDTO.messageContent}{chatMessage.replyingToDTO.messageContent}{chatMessage.replyingToDTO.messageContent}{chatMessage.replyingToDTO.messageContent}{chatMessage.replyingToDTO.messageContent}{chatMessage.replyingToDTO.messageContent}{chatMessage.replyingToDTO.messageContent}{chatMessage.replyingToDTO.messageContent}{chatMessage.replyingToDTO.messageContent}{chatMessage.replyingToDTO.messageContent}
+          </span>
+        </div>
+      )}
+      <div
+        className={`flex flex-row w-full ${
+          isWithin ? "" : "mt-3"
+        } hover:bg-gray-100`}
+      >
+        <div className={`mr-4 ${isWithin ? "hidden" : "block"}`}>
+          <img
+            src={messageProfilePicUrl}
+            className="w-12 h-12 rounded-full shadow"
+          />
+        </div>
+        <div className={`flex-1 flex flex-col ${isWithin ? "ml-16" : ""}`}>
+          {messageTitle(chatMessage)}
+          {messageContent()}
+        </div>
       </div>
     </div>
   );
