@@ -40,7 +40,7 @@ export default function ChatMessageView({
   }
 
   const isWithin = isWithinPreviousMessage();
-  const adjustForUTCOffset = (date) => {
+  const adjustForUTCOffset = (date: Date) => {
     return new Date(
       date.getUTCFullYear(),
       date.getUTCMonth(),
@@ -58,13 +58,43 @@ export default function ChatMessageView({
     switch (chatMessage.messageTypeId) {
       case 1:
         // Text Message
-        return <ReactMarkdown remarkPlugins={[remarkGfm]} children={chatMessage.messageContent}></ReactMarkdown>;
+        return (
+          <ReactMarkdown
+            remarkPlugins={[remarkGfm]}
+            children={chatMessage.messageContent}
+          ></ReactMarkdown>
+        );
       case 2:
         // Image Message
-        return <p><img src={chatMessage.messageContent} className="max-h-96 rounded-md"/></p>;
+        return (
+          <p>
+            <img
+              src={chatMessage.messageContent}
+              className="max-h-96 rounded-md"
+            />
+          </p>
+        );
+      case 3:
+        return (
+          <video
+            controls
+            controlsList="nodownload"
+            className="max-h-65vh m-auto ml-0 rounded-md shadow-xl object-scale-down"
+          >
+            <source
+              src={chatMessage.messageContent}
+              type="video/mp4"
+              className="rounded-md"
+            ></source>
+          </video>
+        );
       case 8:
         // Sticker Message
-        return <p><img src={chatMessage.messageContent} className="w-16 h-16" /></p>;
+        return (
+          <p>
+            <img src={chatMessage.messageContent} className="w-16 h-16" />
+          </p>
+        );
       default:
         return <ReactMarkdown>{chatMessage.messageContent}</ReactMarkdown>;
     }
