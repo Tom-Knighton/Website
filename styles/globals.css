@@ -49,5 +49,5 @@ hr {
 
 a {
   color: blue;
-  text-decoration: underline;
+  @apply dark:text-blue-400;
 }
