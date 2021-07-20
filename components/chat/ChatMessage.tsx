@@ -123,6 +123,7 @@ export default function ChatMessageView({
           </video>
         );
       case 5:
+        // Bot Message
         return chatMessage.messageContent.trim().endsWith(".gif") ? (
           <p>
             <img
@@ -131,7 +132,19 @@ export default function ChatMessageView({
             ></img>
           </p>
         ) : (
-          <ReactMarkdown>{chatMessage.messageContent}</ReactMarkdown>
+          <ReactMarkdown
+            remarkPlugins={[remarkGfm]}
+            children={chatMessage.messageContent}
+          ></ReactMarkdown>
+        );
+      case 7:
+        // Admin Message
+        return (
+          <ReactMarkdown
+            className="border-2 rounded-md shadow-xl text-red-500 shadow p-1 mr-3 mt-1 border-red-500"
+            remarkPlugins={[remarkGfm]}
+            children={chatMessage.messageContent}
+          ></ReactMarkdown>
         );
       case 8:
         // Sticker Message
@@ -141,7 +154,12 @@ export default function ChatMessageView({
           </p>
         );
       default:
-        return <ReactMarkdown>{chatMessage.messageContent}</ReactMarkdown>;
+        return (
+          <ReactMarkdown
+            remarkPlugins={[remarkGfm]}
+            children={chatMessage.messageContent}
+          ></ReactMarkdown>
+        );
     }
   }
 
