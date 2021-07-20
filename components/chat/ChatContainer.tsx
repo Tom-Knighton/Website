@@ -8,8 +8,8 @@ import ChannelView from "./ChannelView";
 
 export default function ChatContainer({ user }: { user: User }) {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-5 gap-y-5 gap-x-0 md:gap-x-5 pb-3 h-full">
-      <div className="col-span-1 overflow-y-scroll">
+    <div className="flex flex-col md:flex-row pb-3 h-full">
+      <div className="overflow-y-scroll max-w-screen md:w-20vw">
         <ChatsList user={user} />
       </div>
 

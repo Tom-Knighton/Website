@@ -1,7 +1,7 @@
 import axios from "axios";
 
 let config = {
-    baseURL: "https://f2b5d0197184.ngrok.io/api/"
+    baseURL: "https://0132f521665e.ngrok.io/api/"
 };
 
 const httpClient = axios.create(config);

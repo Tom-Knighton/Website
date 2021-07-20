@@ -19,6 +19,9 @@ module.exports = {
         grblue3: '#0F2027',
         grblue4: '#203A43',
       },
+      width: {
+        '20vw': '20vw'
+      },
       minWidth: {
         '40': '10rem',
         '44': '11rem',

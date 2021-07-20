@@ -1,9 +1,9 @@
 import axios from "axios";
 
 let urls = {
-    test: "https://f2b5d0197184.ngrok.io/api/",
-    development: "https://f2b5d0197184.ngrok.io/api/",
-    production: "https://api.garyportal.tomk.online/api/"
+    test: "https://0132f521665e.ngrok.io/api/",
+    development: "https://0132f521665e.ngrok.io/api/",
+    production: "https://0132f521665e.ngrok.io/api/"
 }
 
 const api = axios.create({

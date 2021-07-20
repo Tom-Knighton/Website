@@ -10,7 +10,7 @@ import { setNewIncomingChatMessage } from "../actions";
 import { ACTION, AppActions, SocketActions } from "../actions/types";
 
 const connection = new HubConnectionBuilder()
-  .withUrl("https://f2b5d0197184.ngrok.io/chathub")
+  .withUrl("https://0132f521665e.ngrok.io/chathub")
   .configureLogging(LogLevel.Information)
   .withAutomaticReconnect()
   .build();

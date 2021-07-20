@@ -60,19 +60,26 @@ export default function ChatsList({ user }: { user: User }) {
   }
 
   return (
-    <div>
-      <div className="bg-gray-100 dark:bg-darkgraylight shadow-lg rounded-xl p-5 max-h-50 top-0 self-start text-center mb-5 mr-5 ml-5">
-        <h1 className="pageSubtitle">Chats:</h1>
-      </div>
-      {chats.map((chat) => (
-        <div key={chat.chatUUID} onClick={() => clickOnChat(chat)} className="bg-gray-100 dark:bg-darkgraylight shadow-lg rounded-xl p-5 max-h-50 top-0 self-start text-center m-5 flex flex-row place-items-center cursor-pointer hover:bg-gray-200">
-          <img
-            src={getImageUrlForChat(chat)}
-            className="w-12 h-12 rounded-full shadow-xl"
-          />
-          <h1 className="ml-2 font-bold">{getTitleForChat(chat)}</h1>
+    <div className="select-none">
+      <div className="flex flex-row md:flex-col h-28">
+        <div className="flex flex-row bg-gray-100 dark:bg-darkgraylight shadow-lg rounded-xl top-0 m-5 ml-0 md:ml-5 md:mt-0 justify-center items-center p-5 place-items-center">
+          <h1 className="pageSubtitle">Chats:</h1>
         </div>
-      ))}
+        {chats.map((chat) => (
+          <div
+            key={chat.chatUUID}
+            onClick={() => clickOnChat(chat)}
+            className="flex flex-row bg-gray-100 dark:bg-darkgraylight shadow-lg rounded-xl top-0 m-auto m-5 justify-center items-center p-5 place-items-center cursor-pointer hover:bg-gray-200"
+          >
+            <img
+              src={getImageUrlForChat(chat)}
+              className="ml-5 md:ml-0 w-12 h-12 rounded-full shadow-xl"
+            />
+            <h1 className="ml-2 font-bold mr-5 min-w-40 text-sm md:text-base">{getTitleForChat(chat)}</h1>
+            <span className="flex-1"></span>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
