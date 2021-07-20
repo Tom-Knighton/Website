@@ -6,11 +6,16 @@ import ChatInputBar from "./ChatInputBar";
 import MessagesView from "./MessagesView";
 import fetchJson from "../../lib/fetchJson";
 import { sendNewChatMessage } from "../../actions";
+import { useEffect } from "react";
 
 export default function ChannelView() {
   const appStore = useSelector((state: StoreState) => state.app);
-  const { currentChatUUID, currentChat, currentUser } = appStore;
+  let { currentChatUUID, currentChat, currentUser } = appStore;
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    currentChatUUID = currentChatUUID;
+  }, [currentChatUUID]);
 
   async function sendMessage(message: string) {
     let newMessage: ChatMessage = {
@@ -37,10 +42,10 @@ export default function ChannelView() {
   }
 
   return (
-    <div className="col-span-4 rounded-t-md overflow-y-scroll flex flex-col border-2">
-      <ChannelHeader />
+    <div className="flex-1 rounded-t-md overflow-y-scroll flex flex-col border-2">
+      {currentChatUUID && (<ChannelHeader />)}
       <MessagesView />
-      <ChatInputBar onSubmitMessage={(message) => sendMessage(message)} />
+      {currentChatUUID && (<ChatInputBar onSubmitMessage={(message) => sendMessage(message)} />)}
     </div>
   );
 }
