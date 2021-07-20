@@ -1,6 +1,6 @@
 import { ChatMessage } from "../../types/Chat";
 import { DateTime } from "luxon";
-import { JSXElementConstructor, ReactElement } from "react";
+import React, { JSXElementConstructor, ReactElement } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 
@@ -51,6 +51,40 @@ export default function ChatMessageView({
     );
   };
 
+  const messageProfilePicUrl: string =
+    chatMessage.messageTypeId === 5
+      ? "/bot.png"
+      : chatMessage.userDTO.userProfileImageUrl;
+
+  function messageTitle(): ReactElement {
+    const isBot = chatMessage.messageTypeId === 5;
+    const isAdmin = chatMessage.messageTypeId === 7;
+    const name = !isBot
+      ? chatMessage.userDTO.userFullName ?? "[Deleted User]"
+      : "Gary Portal Bot";
+
+    return (
+      <h3 className={`font-bold ${isWithin ? "hidden" : "block"}`}>
+        <span
+          className={`font-bold ${
+            isBot
+              ? "text-yellow-500"
+              : isAdmin
+              ? "text-red-500"
+              : "text-current"
+          }`}
+        >
+          {name}
+        </span>{" "}
+        <span className="font-extralight">
+          {DateTime.fromSQL(chatMessage.messageCreatedAt).toRelative({
+            base: DateTime.fromJSDate(adjustForUTCOffset(new Date())),
+          })}
+        </span>
+      </h3>
+    );
+  }
+
   function messageContent(): ReactElement {
     if (!chatMessage.messageContent) {
       return null;
@@ -88,6 +122,17 @@ export default function ChatMessageView({
             ></source>
           </video>
         );
+      case 5:
+        return chatMessage.messageContent.trim().endsWith(".gif") ? (
+          <p>
+            <img
+              src={chatMessage.messageContent}
+              className="max-h-64 rounded-md"
+            ></img>
+          </p>
+        ) : (
+          <ReactMarkdown>{chatMessage.messageContent}</ReactMarkdown>
+        );
       case 8:
         // Sticker Message
         return (
@@ -108,19 +153,12 @@ export default function ChatMessageView({
     >
       <div className={`mr-4 ${isWithin ? "hidden" : "block"}`}>
         <img
-          src={chatMessage.userDTO.userProfileImageUrl}
+          src={messageProfilePicUrl}
           className="w-12 h-12 rounded-full shadow"
         />
       </div>
       <div className={`flex-1 flex flex-col ${isWithin ? "ml-16" : ""}`}>
-        <h3 className={`font-bold ${isWithin ? "hidden" : "block"}`}>
-          {chatMessage.userDTO.userFullName}{" "}
-          <span className="font-extralight">
-            {DateTime.fromSQL(chatMessage.messageCreatedAt).toRelative({
-              base: DateTime.fromJSDate(adjustForUTCOffset(new Date())),
-            })}
-          </span>
-        </h3>
+        {messageTitle()}
         {messageContent()}
       </div>
     </div>
