@@ -46,3 +46,8 @@ hr {
   transform: translate(-50%, -50%);
   @apply bg-gray-100 dark:bg-darkgraylight rounded-xl shadow-xl text-center p-5 focus:outline-none;
 }
+
+a {
+  color: blue;
+  text-decoration: underline;
+}
