@@ -1,5 +1,6 @@
 import "../styles/globals.css";
 import "../styles/profile.css";
+import "../styles/contextmenu.css";
 import { ThemeProvider } from "next-themes";
 import NavBar from "../components/navbar";
 import { AppProps } from "next/dist/next-server/lib/router/router";

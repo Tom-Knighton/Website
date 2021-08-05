@@ -5,6 +5,8 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { useTheme } from "next-themes";
 import { useEffect } from "react";
+import { Menu, MenuItem, MenuButton, ControlledMenu, MenuHeader, MenuDivider } from "@szhsin/react-menu";
+import { useState } from "react";
 
 export default function ChatMessageView({
   chatMessage,
@@ -13,10 +15,13 @@ export default function ChatMessageView({
   chatMessage: ChatMessage;
   previousChatMessage: ChatMessage | null;
 }) {
-
   let { systemTheme } = useTheme();
+  const [isOpen, setOpen] = useState<boolean>(false);
+  const [anchorPoint, setAnchorPoint] = useState({ x: 0, y: 0 });
 
-  useEffect(() => { systemTheme = systemTheme; }, [systemTheme]);
+  useEffect(() => {
+    systemTheme = systemTheme;
+  }, [systemTheme]);
 
   function isWithinPreviousMessage(): boolean {
     if (!previousChatMessage) {
@@ -93,15 +98,17 @@ export default function ChatMessageView({
         userDTO: reply.userDTO,
         replyingToDTO: null,
         replyingToUUID: null,
-        userUUID: reply.userUUID
+        userUUID: reply.userUUID,
       };
     }
 
     const isBot = chatMessage.messageTypeId === 5;
     const isAdmin = chatMessage.messageTypeId === 7;
-    const name = `${reply ? '@' : ''}${!isBot
-      ? chatMessage.userDTO.userFullName ?? "[Deleted User]"
-      : "Gary Portal Bot"}${reply ? ':' : ''}`;
+    const name = `${reply ? "@" : ""}${
+      !isBot
+        ? chatMessage.userDTO.userFullName ?? "[Deleted User]"
+        : "Gary Portal Bot"
+    }${reply ? ":" : ""}`;
 
     return (
       <h3 className={`font-bold ${isWithin ? "hidden" : "block"}`}>
@@ -207,7 +214,12 @@ export default function ChatMessageView({
     <div className="flex flex-col">
       {chatMessage.replyingToDTO && (
         <div className="flex flex-row mt-1 text-gray-500">
-          <img src={`${systemTheme === 'light' ? 'replyarrow.png' : 'replyarrowdark.png'}`} className="w-6 h-6 ml-5 mr-3" />
+          <img
+            src={`${
+              systemTheme === "light" ? "replyarrow.png" : "replyarrowdark.png"
+            }`}
+            className="w-6 h-6 ml-5 mr-3"
+          />
           <span className="mr-2 text-sm flex-none">
             {messageTitle(null, chatMessage.replyingToDTO)}
           </span>
@@ -216,10 +228,16 @@ export default function ChatMessageView({
           </span>
         </div>
       )}
+
       <div
         className={`flex flex-row w-full ${
           isWithin ? "" : "mt-3"
         } hover:bg-gray-100`}
+        onContextMenu={(e) => {
+          e.preventDefault();
+          setAnchorPoint({ x: e.clientX, y: e.clientY });
+          setOpen(true);
+        }}
       >
         <div className={`mr-4 ${isWithin ? "hidden" : "block"}`}>
           <img
@@ -231,6 +249,22 @@ export default function ChatMessageView({
           {messageTitle(chatMessage)}
           {messageContent()}
         </div>
+
+        <ControlledMenu
+          anchorPoint={anchorPoint}
+          isOpen={isOpen}
+          onClose={() => setOpen(false)}
+        >
+          <MenuHeader>Message Options</MenuHeader>
+          <MenuItem>Edit Message</MenuItem>
+          <MenuItem>Reply</MenuItem>
+          <MenuItem>Copy Message Text</MenuItem>
+          <MenuDivider />
+          <MenuItem className="text-red-500">Delete Message</MenuItem>
+          <MenuItem className="text-red-500">Report Message</MenuItem>
+          <MenuDivider />
+          <MenuItem>Dinosaur Game</MenuItem>
+        </ControlledMenu>
       </div>
     </div>
   );

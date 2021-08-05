@@ -1,59 +1,84 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-body {
-  font-family: "Montserrat";
+@charset "UTF-8";
+@keyframes rc-menu-show-slide-left {
+  from {
+    opacity: 0;
+    transform: translateX(0.75rem);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
 }
-
-hr {
-  @apply w-full border-gray-200 dark:border-gray-700;
+@keyframes rc-menu-hide-slide-left {
+  from {
+    opacity: 1;
+    transform: none;
+  }
+  to {
+    opacity: 0;
+    transform: translateX(0.75rem);
+  }
 }
-
-.flexrow_sm_col {
-  @apply flex flex-col md:flex-row place-items-center md:place-items-center;
+@keyframes rc-menu-show-slide-right {
+  from {
+    opacity: 0;
+    transform: translateX(-0.75rem);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
 }
-
-.pageTitle {
-  @apply font-bold text-5xl;
+@keyframes rc-menu-hide-slide-right {
+  from {
+    opacity: 1;
+    transform: none;
+  }
+  to {
+    opacity: 0;
+    transform: translateX(-0.75rem);
+  }
 }
-
-.pageSubtitle {
-  @apply font-semibold text-3xl;
+@keyframes rc-menu-show-slide-top {
+  from {
+    opacity: 0;
+    transform: translateY(0.75rem);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
 }
-
-.card {
-  @apply bg-gray-100 dark:bg-darkgraylight rounded-xl shadow p-5 m-5 text-center md:text-left;
+@keyframes rc-menu-hide-slide-top {
+  from {
+    opacity: 1;
+    transform: none;
+  }
+  to {
+    opacity: 0;
+    transform: translateY(0.75rem);
+  }
 }
-
-.pageContainer {
-  height: calc(100vh - 64px);
-  @apply px-5 py-5 justify-center place-items-center;
+@keyframes rc-menu-show-slide-bottom {
+  from {
+    opacity: 0;
+    transform: translateY(-0.75rem);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
 }
-
-.pageContainer2 {
-  height: calc(100vh - 64px);
-  @apply justify-center place-items-center;
+@keyframes rc-menu-hide-slide-bottom {
+  from {
+    opacity: 1;
+    transform: none;
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-0.75rem);
+  }
 }
-
-.modal {
-  position: absolute;
-  top: 50%;
-  bottom: auto;
-  left: 50%;
-  right: auto;
-  margin-right: -50;
-  transform: translate(-50%, -50%);
-  @apply bg-gray-100 dark:bg-darkgraylight rounded-xl shadow-xl text-center p-5 focus:outline-none;
-}
-
-a {
-  color: blue;
-  @apply dark:text-blue-400;
-}
-
-/* Context menu css */
-/*
 .rc-menu-container {
   position: relative;
   width: 0px;
@@ -70,7 +95,8 @@ a {
   position: absolute;
   z-index: 100;
   border: 1px solid rgba(0, 0, 0, 0.1);
-  @apply bg-gray-100 dark:bg-gray-900 dark:text-white
+  background-color: #fff;
+  @apply dark:bg-contextdark dark:text-contextdarktext
 }
 .rc-menu:focus {
   outline: none;
@@ -228,60 +254,3 @@ a {
   padding: 0.2rem 1.5rem;
   text-transform: uppercase;
 }
-
-
-/* /*.rc-menu {
-  position: fixed;
-  width: 200px;
-  left: 0;
-  top: calc(100% + 10px);
-  border-radius: 4px;
-  background-color: #fff;
-  padding: 10px 0;
-  z-index: 99;
-  box-shadow: 0 0 2px rgba(0, 0, 0, 0.02);
-}
-.rc-menu .rc-menu__item:hover {
-  background: #cccccc;
-}
-
-.react-contextmenu-item:hover:not(.react-contextmenu-item--disabled) {
-  background-color: #f1f1f1;
-}
-
-.react-contextmenu .react-contextmenu-item {
-  font-size: 14px;
-  display: block;
-  text-decoration: none;
-  padding: 10px 15px;
-  cursor: pointer;
-  user-select: none;
-  transition: 0.2s;
-  position: relative;
-  margin-bottom: 2px;
-  font-weight: 500;
-  display: flex;
-  align-items: center;
-  outline: none;
-}
-.react-contextmenu-item span {
-  margin-left: 10px;
-}
-.react-contextmenu-item svg {
-  font-size: 14px;
-}
-.react-contextmenu-item .copy {
-  color: skyblue;
-}
-.react-contextmenu-item .delete {
-  color: red;
-}
-.react-contextmenu-item .send {
-  color: blue;
-}
-.react-contextmenu-item .share {
-  color: green;
-}
-.react-contextmenu-item .watchlist {
-  color: rebeccapurple;
-} */

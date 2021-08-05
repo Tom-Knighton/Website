@@ -7,6 +7,8 @@ module.exports = {
       colors: {
         darkgray: '#121212',
         darkgraylight: '#1a1a1a',
+        contextdark: '#22262c',
+        contextdarktext: '#cad1d8',
         grpurple: '#8E2DE2',
         grpurple2: '#4A00E0',
         grpink: '#8A2387',
