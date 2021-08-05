@@ -232,7 +232,7 @@ export default function ChatMessageView({
       <div
         className={`flex flex-row w-full ${
           isWithin ? "" : "mt-3"
-        } hover:bg-gray-100`}
+        } hover:bg-gray-100 dark:hover:bg-gray-900`}
         onContextMenu={(e) => {
           e.preventDefault();
           setAnchorPoint({ x: e.clientX, y: e.clientY });
