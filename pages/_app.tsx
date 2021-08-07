@@ -11,7 +11,7 @@ import { composeWithDevTools } from "redux-devtools-extension";
 import { chatHubRegistration } from "../middleware/chatHub";
 import { useEffect } from "react";
 import GaryPortalProvider from "../lib/GaryPortalProvider";
-
+import toast, { Toaster } from "react-hot-toast";
 const store = createStore(
   reducers,
   composeWithDevTools(applyMiddleware(chatHubRegistration))
@@ -23,7 +23,8 @@ export default function App({ Component, pageProps }: AppProps) {
       <ThemeProvider enableSystem={true} attribute="class">
         <GaryPortalProvider>
           <NavBar page={Component.name}></NavBar>
-          <Component {...pageProps} />
+          <Component {...pageProps}></Component>
+          <Toaster />
         </GaryPortalProvider>
       </ThemeProvider>
     </Provider>

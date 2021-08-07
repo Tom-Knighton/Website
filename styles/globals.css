@@ -52,6 +52,15 @@ a {
   @apply dark:text-blue-400;
 }
 
+.gptoast {
+  @apply bg-gray-100 dark:bg-darkgraylight dark:text-white;
+}
+
+.reactmodaloverlay {
+  position: fixed;
+  inset: 0px;
+  background-color: rgba(0, 0, 0, 0.5);
+}
 /* Context menu css */
 /*
 .rc-menu-container {

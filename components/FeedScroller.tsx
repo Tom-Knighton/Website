@@ -117,6 +117,7 @@ export default function FeedScroller({ team }: { team: UserTeam }) {
         className="modal"
         shouldCloseOnEsc={true}
         shouldCloseOnOverlayClick={true}
+        overlayClassName="reactmodaloverlay"
       >
         <span>
           Uh oh! Right now you can only vote on polls from the iOS app, but Gary
