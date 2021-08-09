@@ -48,3 +48,8 @@ export interface ChatReplyDTO {
   messageIsDeleted: boolean;
   userDTO: UserDTO;
 }
+
+export interface ChatBarResult {
+  messageTypeId: number;
+  rawText: string;
+}

@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { StoreState } from "../../reducers";
-import { ChatMessage } from "../../types/Chat";
+import { ChatBarResult, ChatMessage } from "../../types/Chat";
 import ChannelHeader from "./ChannelHeader";
 import ChatInputBar from "./ChatInputBar";
 import MessagesView from "./MessagesView";
@@ -17,15 +17,15 @@ export default function ChannelView() {
     currentChatUUID = currentChatUUID;
   }, [currentChatUUID]);
 
-  async function sendMessage(message: string) {
+  async function sendMessage(message: ChatBarResult) {
     let newMessage: ChatMessage = {
       chatMessageUUID: "",
       chatUUID: currentChat.chatUUID,
-      messageContent: message,
+      messageContent: message.rawText,
       messageCreatedAt: new Date(),
       messageHasBeenEdited: false,
       messageIsDeleted: false,
-      messageTypeId: 1,
+      messageTypeId: message.messageTypeId,
       replyingToUUID: null,
       user: null,
       userUUID: currentUser.userUUID,

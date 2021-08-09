@@ -1,4 +1,5 @@
 import { Chat, ReceiveNewChatMessageDTO } from "../types/Chat";
+import Sticker from "../types/Sticker";
 import User from "../types/User";
 
 export enum ACTION {
@@ -7,6 +8,7 @@ export enum ACTION {
     UPDATE_CURRENT_USER,
     UPDATE_CURRENT_CHAT_UUID,
     UPDATE_CURRENT_CHAT,
+    UPDATE_STICKER_CACHE,
 
     /* Chat */
     SET_NEW_INCOMING_CHAT_MESSAGE,
@@ -16,7 +18,7 @@ export enum ACTION {
     SUBSCRIBE_TO_CHATS
 }
 
-export type AppActions = | UpdateUserAction | UpdateChatAction | UpdateChatUUIDAction | NewIncomingMessage;
+export type AppActions = | UpdateUserAction | UpdateChatAction | UpdateChatUUIDAction | NewIncomingMessage | UpdateStickerCacheAction;
 
 export type SocketActions = | SendNewChatMessageAction | SubscribeToChats;
 
@@ -35,6 +37,11 @@ export type UpdateChatUUIDAction = {
 export type UpdateChatAction = {
     type: ACTION.UPDATE_CURRENT_CHAT,
     payload: UpdateCurrentChatPayload
+}
+
+export type UpdateStickerCacheAction = {
+    type: ACTION.UPDATE_STICKER_CACHE,
+    payload: UpdateStickerCachePayload
 }
 
 export type SendNewChatMessageAction = {
@@ -60,6 +67,10 @@ export interface UpdateCurrentUserPayload {
 
 export interface UpdateCurrentChatUUIDPayload {
     chatUUID: string
+}
+
+export interface UpdateStickerCachePayload {
+    stickers: Sticker[]
 }
 
 export interface UpdateCurrentChatPayload {

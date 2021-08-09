@@ -1,5 +1,6 @@
 import { ACTION, AppActions } from "../actions/types";
 import { Chat, ReceiveNewChatMessageDTO } from "../types/Chat";
+import Sticker from "../types/Sticker";
 import User from "../types/User";
 
 export interface AppStore {
@@ -7,12 +8,14 @@ export interface AppStore {
   currentChat?: Chat;
   currentChatUUID?: string;
   latestChatMessage?: ReceiveNewChatMessageDTO;
+  stickerCache: Sticker[];
 }
 
 const initialState = {
   currentUser: null,
   currentChatUUID: null,
   latestChatMessage: null,
+  stickerCache: [],
 };
 
 export const appReducer = (
@@ -30,6 +33,8 @@ export const appReducer = (
       return { ...state, currentUser: action.payload.user };
     case ACTION.UPDATE_CURRENT_CHAT_UUID:
       return { ...state, currentChatUUID: action.payload.chatUUID };
+    case ACTION.UPDATE_STICKER_CACHE:
+      return { ...state, stickerCache: action.payload.stickers };
     case ACTION.SET_NEW_INCOMING_CHAT_MESSAGE:
       return { ...state, latestChatMessage: action.payload };
     default:

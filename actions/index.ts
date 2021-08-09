@@ -1,5 +1,5 @@
 import { ReceiveNewChatMessageDTO } from "../types/Chat";
-import { ACTION, UpdateUserAction, UpdateChatAction, UpdateCurrentUserPayload, UpdateCurrentChatPayload, UpdateCurrentChatUUIDPayload, UpdateChatUUIDAction, SendNewChatMessageAction, SendNewChatMessagePayload, SubscribeToChatsPayload, SubscribeToChats, NewIncomingMessage } from "./types";
+import { ACTION, UpdateUserAction, UpdateChatAction, UpdateCurrentUserPayload, UpdateCurrentChatPayload, UpdateCurrentChatUUIDPayload, UpdateChatUUIDAction, SendNewChatMessageAction, SendNewChatMessagePayload, SubscribeToChatsPayload, SubscribeToChats, NewIncomingMessage, UpdateStickerCachePayload, UpdateStickerCacheAction } from "./types";
 
 export const updateCurrentUser = (data: UpdateCurrentUserPayload): UpdateUserAction => ({
     type: ACTION.UPDATE_CURRENT_USER,
@@ -8,6 +8,11 @@ export const updateCurrentUser = (data: UpdateCurrentUserPayload): UpdateUserAct
 
 export const updateCurrentChatUUID = (data: UpdateCurrentChatUUIDPayload): UpdateChatUUIDAction => ({
     type: ACTION.UPDATE_CURRENT_CHAT_UUID,
+    payload: data
+});
+
+export const updateStickerCache = (data: UpdateStickerCachePayload): UpdateStickerCacheAction => ({
+    type: ACTION.UPDATE_STICKER_CACHE,
     payload: data
 });
 
