@@ -72,14 +72,15 @@ export default function ChatsList({ user }: { user: User }) {
   return (
     <div className="select-none">
       <div className="flex flex-row md:flex-col h-28">
-        <div className="flex flex-row bg-gray-100 dark:bg-darkgraylight shadow-lg rounded-xl top-0 m-5 ml-0 md:ml-5 md:mt-0 justify-center items-center p-5 place-items-center">
-          <h1 className="pageSubtitle">Chats:</h1>
+        <div className="flex flex-col bg-gray-100 dark:bg-darkgraylight shadow-lg rounded-xl top-0 m-5 mt-0 ml-0 md:mt-0 justify-center items-center p-5 place-items-center">
+          <h1 className="font-bold text-lg md:font-semibold md:text-3xl">Chats:</h1>
+          <button className="min-w-40 w-full p-2 md:p-3 rounded-md text-xs md:text-base bg-gradient-to-r from-red-400 to-pink-500 hover:scale-105 hover:from-red-500">Create Chat</button>
         </div>
         {chats.map((chat) => (
           <div
             key={chat.chatUUID}
             onClick={() => clickOnChat(chat)}
-            className="flex flex-row bg-gray-100 dark:bg-darkgraylight shadow-lg rounded-xl top-0 m-auto m-5 justify-center items-center p-5 place-items-center cursor-pointer hover:bg-gray-200"
+            className="flex flex-row bg-gray-100 dark:bg-darkgraylight shadow-lg rounded-xl top-0 m-5 mt-0 ml-0 justify-center items-center p-5 place-items-center cursor-pointer hover:bg-gray-200"
           >
             <img
               src={getImageUrlForChat(chat)}
