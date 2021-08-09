@@ -2,8 +2,10 @@ import { useEffect } from "react";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { updateCurrentChat } from "../../actions";
+import chat from "../../pages/api/chat";
 import { Chat } from "../../types/Chat";
 import User from "../../types/User";
+import { MailIcon } from "@heroicons/react/outline";
 
 export default function ChatsList({ user }: { user: User }) {
   const [chats, setChatState] = useState<Chat[]>([]);
@@ -54,6 +56,14 @@ export default function ChatsList({ user }: { user: User }) {
     }
   }
 
+  const hasUnreadMessages = (chat: Chat): boolean  => {
+    if (!chat.lastChatMessage || !chat.chatMembers.some(cm => cm.userUUID === user.userUUID)) {
+      return false;
+    }
+
+    return chat.chatMembers.filter(cm => cm.userUUID == user.userUUID)[0].lastReadAt < chat.lastChatMessage.messageCreatedAt;
+  }
+
   function clickOnChat(chat: Chat) {
     console.log(chat);
     dispatch(updateCurrentChat({ chat: chat }));
@@ -77,6 +87,7 @@ export default function ChatsList({ user }: { user: User }) {
             />
             <h1 className="ml-2 font-bold mr-5 min-w-40 text-sm md:text-base">{getTitleForChat(chat)}</h1>
             <span className="flex-1"></span>
+            { hasUnreadMessages(chat) && <MailIcon className="h-6 w-6 mr-1 text-blue-500"/> }
           </div>
         ))}
       </div>
