@@ -4,18 +4,22 @@ import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { BellIcon, MenuIcon, XIcon } from "@heroicons/react/outline";
 import React, { useState } from "react";
 import useUser from "../lib/useUser";
+import { useSelector } from "react-redux";
+import { StoreState } from "../reducers";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-export default function NavBar(props) {
+export default function NavBar({ page }: { page: string }) {
 
-  const name = props.page;
+  const appStore = useSelector((state: StoreState) => state.app);
+  const { currentChatUUID, currentChat, currentUser, latestChatMessage } =
+    appStore;
   const [navigation, setNavigation] = useState([
-    { name: "Profile", href: "/", current: name === "Home" },
-    { name: "Feed", href: "/feed", current: name === "Feed" },
-    { name: "Chat", href: "/chat", current: name === "Chat" },
+    { name: "Profile", href: "/", current: page === "Home" },
+    { name: "Feed", href: "/feed", current: page === "Feed" },
+    { name: "Chat", href: "/chat", current: page === "Chat" },
     {
       name: "Team Hub (Coming Soon!)",
       href: "#",
@@ -25,14 +29,12 @@ export default function NavBar(props) {
     { name: "Games (Coming Soon!)", href: "#", current: false, disabled: true },
   ]);
 
-  function setCurrent(name) {
+  function setCurrent(name: string) {
     let links = [...navigation];
     links.forEach((e) => (e.current = false));
     links.find((e) => e.name === name).current = true;
     setNavigation(links);
   }
-
-  const { user } = useUser();
 
   return (
     <Disclosure as="nav" className="bg-gray-800" id="navbarcont">
@@ -107,7 +109,7 @@ export default function NavBar(props) {
                           <span className="sr-only">Open user menu</span>
                           <img
                             className="h-8 w-8 rounded-full"
-                            src={user?.userProfileImageUrl}
+                            src={currentUser?.userProfileImageUrl}
                             alt=""
                           />
                         </Menu.Button>
@@ -135,7 +137,7 @@ export default function NavBar(props) {
                                   "block px-4 py-2 text-sm text-gray-700"
                                 )}
                               >
-                                Your Profile {user.userName} :)
+                                Your Profile {currentUser?.userName}
                               </a>
                             )}
                           </Menu.Item>
