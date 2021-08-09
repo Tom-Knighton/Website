@@ -85,9 +85,9 @@ export default function ChatsList({ user }: { user: User }) {
               src={getImageUrlForChat(chat)}
               className="ml-5 md:ml-0 w-12 h-12 rounded-full shadow-xl"
             />
-            <h1 className="ml-2 font-bold mr-5 min-w-40 text-sm md:text-base">{getTitleForChat(chat)}</h1>
+            <h1 className="ml-2 font-bold mr-5 min-w-40 text-sm md:text-sm">{getTitleForChat(chat)}</h1>
             <span className="flex-1"></span>
-            { hasUnreadMessages(chat) && <MailIcon className="h-6 w-6 mr-1 text-blue-500"/> }
+            { hasUnreadMessages(chat) && <div><MailIcon className="text-blue-500 w-6 h-6 mr-5 md:mr-1"/></div> }
           </div>
         ))}
       </div>
