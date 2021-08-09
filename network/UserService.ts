@@ -1,3 +1,4 @@
+import { UserReport } from "../types/Report.js";
 import ApiClient from "./apiclient.js";
 
 class UserService {
@@ -18,7 +19,9 @@ class UserService {
       .then((resp) => {
         return resp.data;
       })
-      .catch((error) => { console.log(error)});
+      .catch((error) => {
+        console.log(error);
+      });
   }
 
   static async getCurrentUser(auth) {
@@ -39,6 +42,26 @@ class UserService {
         return resp.data;
       })
       .catch((error) => {});
+  }
+
+  static async reportUser(
+    uuidToReport: string,
+    reportedByUUID: string,
+    reason: string,
+    auth: string
+  ) {
+    const report: UserReport = {
+      userReportId: 0,
+      userUUID: uuidToReport,
+      reportReason: reason,
+      reportIssuedAt: new Date(),
+      reportbyUUID: reportedByUUID,
+      isDeleted: false,
+      reportedUser: null,
+      reporter: null,
+    };
+
+    return ApiClient.post(`users/reportuser/${uuidToReport}`, report, auth);
   }
 }
 

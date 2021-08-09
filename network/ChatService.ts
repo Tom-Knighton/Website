@@ -1,5 +1,6 @@
 import ApiClient from "./apiclient";
 import { Chat, ChatMessage } from "../types/Chat";
+import { ChatMessageReport } from "../types/Report";
 
 class ChatService {
   static async GetChatsForUser(userUUID: string, auth: string) {
@@ -18,7 +19,10 @@ class ChatService {
       .catch();
   }
 
-  static async GetMessageByUUID(messageUUID: string, auth: string): Promise<ChatMessage> {
+  static async GetMessageByUUID(
+    messageUUID: string,
+    auth: string
+  ): Promise<ChatMessage> {
     return ApiClient.get(`chat/message/${messageUUID}`, auth)
       .then((resp) => {
         return resp.data as ChatMessage;
@@ -56,6 +60,26 @@ class ChatService {
       .catch(() => {
         return null;
       });
+  }
+
+  static async ReportChatMessage(
+    messageUUID: string,
+    reporterUUID: string,
+    reason: string,
+    auth: string
+  ) {
+    const chatMessageReport: ChatMessageReport = {
+      chatMessageReportId: 0,
+      chatMessageUUID: messageUUID,
+      reportReason: reason,
+      reportIssuedAt: new Date(),
+      reportByUUID: reporterUUID,
+      isDeleted: false,
+      reportedMessage: null,
+      reporter: null,
+    };
+
+    return ApiClient.post(`chat/reportmessage/${messageUUID}`, chatMessageReport, auth);
   }
 }
 
