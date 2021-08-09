@@ -101,7 +101,7 @@ export default function NavBar({ page }: { page: string }) {
               </div>
               <div className="absolute inset-y-0 right-0 flex items-center pr-2 md:static md:inset-auto md:ml-6 md:pr-0">
                 {/* Profile dropdown */}
-                <Menu as="div" className="ml-3 relative">
+                <Menu as="div" className="ml-3 relative z-50">
                   {({ open }) => (
                     <>
                       <div>
