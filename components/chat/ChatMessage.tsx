@@ -5,8 +5,22 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { useTheme } from "next-themes";
 import { useEffect } from "react";
-import { Menu, MenuItem, MenuButton, ControlledMenu, MenuHeader, MenuDivider } from "@szhsin/react-menu";
+import Modal from "react-modal";
+import ReportModal from "../ReportModal";
+import {
+  Menu,
+  MenuItem,
+  MenuButton,
+  ControlledMenu,
+  MenuHeader,
+  MenuDivider,
+  SubMenu,
+} from "@szhsin/react-menu";
 import { useState } from "react";
+import { useSelector } from "react-redux";
+import { StoreState } from "../../reducers";
+import toast from "react-hot-toast";
+import { ReportType } from "../../types/Report";
 
 export default function ChatMessageView({
   chatMessage,
@@ -17,7 +31,11 @@ export default function ChatMessageView({
 }) {
   let { systemTheme } = useTheme();
   const [isOpen, setOpen] = useState<boolean>(false);
+  const [isModalOpen, setModalOpen] = useState<boolean>(false);
   const [anchorPoint, setAnchorPoint] = useState({ x: 0, y: 0 });
+  const appStore = useSelector((state: StoreState) => state.app);
+  const { currentChatUUID, currentChat, currentUser, latestChatMessage } =
+    appStore;
 
   useEffect(() => {
     systemTheme = systemTheme;
@@ -210,8 +228,56 @@ export default function ChatMessageView({
     }
   }
 
+  const canDoSuperActions =
+    currentUser &&
+    currentUser.userUUID === chatMessage.userUUID &&
+    chatMessage.messageTypeId !== 5;
+
+  /* Message Option Functions */
+  function copyMessageText() {
+    const el = document.createElement("textarea");
+    el.value = chatMessage.messageContent;
+    el.setAttribute("readonly", "");
+    el.style.position = "absolute";
+    el.style.left = "-9999px";
+    document.body.appendChild(el);
+    el.select();
+    document.execCommand("copy");
+    document.body.removeChild(el);
+    toast("Message copied successfully", {
+      duration: 2000,
+      position: "bottom-center",
+      className: "gptoast",
+    });
+  }
+
   return (
     <div className="flex flex-col">
+      <Modal
+        isOpen={isModalOpen}
+        className="modal"
+        shouldCloseOnEsc={true}
+        shouldCloseOnOverlayClick={true}
+        overlayClassName="reactmodaloverlay"
+      >
+        <ReportModal
+          reportType={ReportType.ChatMessage}
+          reportId={chatMessage.chatMessageUUID}
+          reporterUUID={currentUser.userUUID}
+          onCancel={() => {
+            setModalOpen(false);
+          }}
+          onReport={() => {
+            setModalOpen(false);
+            toast("Report submitted successfully, thanks for keeping Gary Portal safe!", {
+              duration: 5000,
+              position: "bottom-center",
+              className: "gptoast",
+            });
+          }}
+        />
+      </Modal>
+
       {chatMessage.replyingToDTO && (
         <div className="flex flex-row mt-1 text-gray-500">
           <img
@@ -256,12 +322,21 @@ export default function ChatMessageView({
           onClose={() => setOpen(false)}
         >
           <MenuHeader>Message Options</MenuHeader>
-          <MenuItem>Edit Message</MenuItem>
+          {canDoSuperActions && <MenuItem>Edit Message</MenuItem>}
           <MenuItem>Reply</MenuItem>
-          <MenuItem>Copy Message Text</MenuItem>
+          <MenuItem onClick={copyMessageText}>Copy Message Text</MenuItem>
           <MenuDivider />
-          <MenuItem className="text-red-500">Delete Message</MenuItem>
-          <MenuItem className="text-red-500">Report Message</MenuItem>
+          {canDoSuperActions && (
+            <MenuItem className="text-red-500">Delete Message</MenuItem>
+          )}
+          <MenuItem
+            onClick={() => {
+              setModalOpen(true);
+            }}
+            className="text-red-500"
+          >
+            Report Message
+          </MenuItem>
           <MenuDivider />
           <MenuItem>Dinosaur Game</MenuItem>
         </ControlledMenu>
